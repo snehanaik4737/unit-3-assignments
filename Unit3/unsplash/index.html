@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+        #container{
+            display:flex;
+        }
+        #sidebar{
+            flex:2;
+           margin-left: 5%;
+            /* border:1px solid black */
+
+        }
+        #sidebar>div,input{
+            margin-bottom: 5%;
+        }
+
+       
+        #main{
+            flex:8;
+            /* border:1px solid black; */
+            display:grid;
+            grid-template-columns: repeat(3,30%);
+            grid-gap:3%;
+        }
+        #main>div{
+            height:400px;
+
+        }
+
+        img{
+            height:100%;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="container">
+
+        <div id="sidebar">
+
+  <!-- append the horizontal navbar(sidebar) here only -->
+        
+     
+        </div>
+
+        <div id="main">
+
+            <!-- append top images here only -->
+        </div>
+    </div>
+    
+</body>
+</html>
+<script type="module">
+
+//create ui component and export
+// import navbar
+//append
+//get top images
+//import make api call
+///key 3Bd0M9F1ARcZMbKdu4_A3BIFTDpFonIcA5M-HFdnm8M
+//
+
+import { sidebar } from "./components/sidebar.js";
+
+
+import { makeAPICall, appendPictures } from "./scripts/main.js";
+
+
+
+
+ let sidebar_div= document.getElementById("sidebar");
+
+ sidebar_div.innerHTML=sidebar();
+
+let images_data = await makeAPICall("https://api.unsplash.com/photos/?client_id=3Bd0M9F1ARcZMbKdu4_A3BIFTDpFonIcA5M-HFdnm8M")
+ console.log(images_data);
+
+
+
+ let parent= document.getElementById("main");
+
+ appendPictures(images_data,parent);
+
+ let input= document.getElementById("searchbar");
+
+ input.addEventListener("keypress", (e)=>{
+    if(e.key==="Enter"){
+
+        let input_value= document.getElementById("searchbar").value;
+        
+        localStorage.setItem("search_term",input_value);
+        window.location.href="search.html";
+    }
+ })
+
+</script>

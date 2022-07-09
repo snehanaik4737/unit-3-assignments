@@ -1,0 +1,38 @@
+#login-form-div{
+    width:40%;
+    margin:auto;
+    text-align: center;
+}
+form>input{
+   margin-bottom: 5%;
+   padding: 10px;
+}
+#submit{
+   width:40%;
+   background-color: teal;
+   border:0;
+   color: white;
+}
+
+#container {
+   height:35px;
+   background-color:white;
+   color:black;
+   display:flex;
+   padding:10px 0 0 15px;
+   border-radius: 10px;
+   border:2px solid black;
+ 
+   width:98%;
+   justify-content: flex-end;
+   margin:auto;
+
+
+ }
+ #container>div{
+     margin-left: 5%;
+   
+ }
+ #container>div:hover{
+   color:crimson;
+ }

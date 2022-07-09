@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+          body {
+      background-image: url("https://ak.picdn.net/shutterstock/videos/3666683/thumb/1.jpg=");
+    
+  }
+       #upperdiv{
+       width:80%;
+      /* height:100px; */
+       margin:auto;
+       /* background-color:azure; */
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+     }
+     input{
+    margin-left: 35%;
+    padding:10px;
+    width:30%;
+    border-radius: 50px;
+  
+   }
+   #movie{
+        width:32%;
+        height:200px;
+         border:1px solid white;
+        overflow:scroll;
+        margin-left: 35%;
+        color:white;
+        /* background-color: black; */
+      }
+
+      #movie::-webkit-scrollbar{
+    display: none;
+}
+
+      h1{
+      text-align: center;
+       color:seashell;
+   }
+
+
+
+   #container{
+    /* display:grid;
+      grid-template-columns: repeat(2, 50%);
+    
+      grid-gap:10px; */
+      margin:auto;
+      margin-top:30px;
+      width:70%;
+      height:300px;
+      border:1px solid white;
+   }
+  
+   #flex{
+      display:flex;
+     /* justify-content: space-between; */
+      border:1px solid grey;
+      height:300px;
+      /* justify-content: space-between; */
+     
+   }
+  
+   #flex1{
+      width:40%;
+   }
+   #flex2{
+       color:white;
+    margin-left:0%;
+    background-color: black;
+    width:60%;
+      
+       
+   }
+   img{
+       width:100%;
+       height:100%;
+   }
+  
+   #cont{
+       width:30%;
+       margin:auto;
+       margin-top:-400px;
+       border:1px solid white;
+   }
+  
+
+   #recom{
+     width:150px;
+     height:50px;
+     margin-left: 30px;
+ }
+
+ p{
+     margin-left: 30px;
+     font-weight: bold;
+     font-size: 20px;
+ }
+
+  </style>
+</head>
+<body>
+  <h1>
+    Welcome to Prime Amaze!
+</h1>
+  <div id="upperdiv">
+  <input oninput="debounce(main,1000)" type ="text" id="query" placeholder="search for your favourite movie">
+
+ 
+  <div id="movie"></div>
+
+</div>
+
+
+<div id="container"></div>
+<div id="cont"></div>
+</body>
+</html> 
+
+<script>
+  async function searchMovie(){
+
+// get the movie
+try{
+let movie=document.getElementById("query").value;
+
+var url =`http://www.omdbapi.com/?apikey=34b37aaf&s=${movie}`;
+
+
+  let res= await fetch(url);
+  let data = await res.json();
+  return data.Search;
+  console.log("data",data);
+}
+
+catch(err){
+  console.log("err;",err);
+  
+}
+}
+
+
+
+async function main(){
+let data = await searchMovie();
+if(data ===undefined){
+  appendconfusion();
+  return false;
+ 
+}
+
+appendData(data);
+
+//console.log("data:",data);
+
+
+}
+
+
+function appendData(movies){
+document.getElementById("movie").innerHTML="";
+document.getElementById("movie").style.background="black";
+document.querySelector("#cont").innerHTML="";
+
+movies.map(function(elem){
+
+ let subdiv= document.createElement("div");
+ subdiv.setAttribute("id","div");
+ subdiv.addEventListener("click",function(){
+     appendMovies(elem);
+ })
+
+
+
+
+let p= document.createElement("p");
+// p.onclick= "appendMovies(elem)";
+
+p.innerText=elem.Title;
+ 
+subdiv.append(p);
+
+document.getElementById("movie").append(subdiv);
+
+})
+
+}
+
+
+
+//debounc function
+
+let timerId;
+function debounce(func, delay){
+ 
+if(timerId){
+  clearTimeout(timerId);
+}
+timerId=setTimeout(function(){
+  func();
+}, delay);
+}
+
+
+
+
+
+function appendMovies(datamve){
+
+    // console.log(datamve);
+ 
+document.querySelector("#container").innerHTML="";
+document.querySelector("#cont").innerHTML="";
+
+// datamve.forEach(function(el){
+  var div = document.createElement("div");
+  div.setAttribute("id","flex");
+ 
+  var div1= document.createElement("div");
+  div1.setAttribute("id","flex1");
+
+  var img= document.createElement("img");
+  img.src=datamve.Poster;
+ 
+
+  var div2= document.createElement("div");
+  div2.setAttribute("id","flex2");
+
+  var para= document.createElement("p");
+  para.textContent="Title:"+datamve.Title;
+
+  var year=document.createElement("p");
+  year.textContent="Year:"+datamve.Year;
+
+  var imdb= document.createElement("p");
+  imdb.textContent="imdbId:"+datamve.imdbID;
+  
+ 
+  let x= (Math.random()*10);
+ var imdbrating = document.createElement("p");
+ imdbrating.textContent="imdb Rating:" +x.toFixed(1);
+
+ div1.append(img);
+   
+ 
+ var recommend = document.createElement("img");
+ recommend.setAttribute("id","recom");
+ recommend.src="./recommended1.PNG";
+
+
+  if(x>8.5){
+   div2.append(para,year,imdb, imdbrating,recommend);
+      
+  }
+  else{
+   div2.append(para,year,imdb, imdbrating);
+  }
+
+
+  div.append(div1,div2);
+
+  document.querySelector("#container").append(div);
+
+
+// })
+
+ }
+
+
+function appendconfusion(){
+document.querySelector("#cont").innerHTML="";
+var img2 = document.createElement("img");
+img2.src="https://c.tenor.com/unvXyxtdn3oAAAAC/no-result.gif",
+document.querySelector("#cont").append(img2);
+
+}
+
+
+</script>
+

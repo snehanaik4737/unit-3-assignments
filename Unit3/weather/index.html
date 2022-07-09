@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+
+   <style>
+       body {
+      background-image: url('https://thumbs.gfycat.com/DizzyWhisperedGuppy-max-1mb.gif');
+  /* background-repeat: no-repeat; */
+ 
+  }
+  input,button{
+  display:block;
+  margin:auto;
+  margin-top: 10px;
+  }
+
+  #container{
+    color:white;
+    width:500px;
+   border:none;
+   font-size:x-large;
+
+
+
+  }
+  #box{
+    display:flex;
+    justify-content: space-around;
+  }
+ 
+
+  #dailydata{
+      width:100%;
+      /* border:1px solid white; */
+      color:white;
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-gap:10px;
+      text-align: center;
+  }
+  #dailydata>div{
+      border:1px solid white;
+  }
+    #icon{
+        width:50px;
+        height:50px;
+    }
+
+
+     </style>
+     <style>
+     .mapouter{position:relative;text-align:right;height:300px;width:300px;}
+     
+     </style>
+
+    <style>
+    .gmap_canvas {overflow:hidden;background:none!important;height:300px;width:300px;}
+  </style>
+ </head>
+
+ 
+ <body>
+     
+     
+    <input type="text" placeholder="Enter the city name"id="city">
+    <button onclick="getWeatherData()">Search</button>
+   <div id="box">
+    <div id="container"></div>
+    <div class="mapouter"><div class="gmap_canvas">
+        <iframe width="600" height="500" id="gmap_canvas"  frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        <a href="https://123movies-to.org"></a><br>
+    
+        <a href="https://www.embedgooglemap.net">free goggle map</a></div></div>
+
+      </div>
+      <div id="dailydata"></div>
+    
+ </body>
+ </html>
+
+
+ <script>
+ 
+ let key= "25b03c27a508d5919687aadfab43544e";
+
+ let iframe=document.getElementById("gmap_canvas");
+
+ async function getWeatherData(){
+   try{
+    let city= document.getElementById("city").value;
+     let days=7;
+
+    let res=await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${key}&units=metric`);
+
+    let data= await res.json();
+    console.log(data);
+
+    appendData(data);
+  
+    dailydata(data)
+ }
+ 
+ catch(err){
+  console.log("err",err);
+ }
+ }
+
+
+
+ function appendData(data){
+ 
+ document.querySelector("#container").innerHTML="";
+ 
+  let name= document.createElement("p");
+  name.textContent="City:"+data.city.name
+  
+  let temp= document.createElement("p");
+  temp.textContent="Temp:" +data.list[0].main.temp+"°";
+  console.log(temp);
+
+  let temp_max=  document.createElement("p");
+  temp_max.textContent="Temp_max:"+data.list[0].main.temp_max+"°";
+
+  
+  let temp_min=  document.createElement("p");
+  temp_min.textContent="Temp_min:"+data.list[0].main.temp_min+"°";
+
+var windspd= document.createElement("p");
+  windspd.textContent="wind speed:"+data.list[0].wind.speed;
+
+  var humid=  document.createElement("p");
+  humid.textContent="humidity:"+data.list[0].main.humidity+"%";
+  console.log(humid);
+  
+
+ 
+ 
+ iframe.src=`https://maps.google.com/maps?q=${data.city.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+
+document.querySelector("#container").append(name,temp,temp_max,temp_min,windspd,humid)
+ 
+
+ }
+  
+
+ function dailydata(data){
+
+ document.getElementById("dailydata").innerHTML="";
+ var arr=["Thu","Fri","Sat","Sun","Mon","Tue","Wed","Thu"];
+
+
+ for(var i=0; i<data.list.length; i++){
+
+ let lowerdivs= document.createElement("div");
+
+
+let Temp_max=  document.createElement("p");
+ Temp_max.textContent="Temp_max:"+data.list[i].main.temp_max+"°";
+
+  
+  let Temp_min=  document.createElement("p");
+  Temp_min.textContent="Temp_min:"+data.list[i].main.temp_min+"°";
+
+  var days=document.createElement("p");
+ days.textContent= arr[i];
+
+ var image= document.createElement("img");
+ image.setAttribute("id","icon")
+ image.src="./image/cloudy.png";
+
+  lowerdivs.append(days,image,Temp_max,Temp_min);
+  document.getElementById("dailydata").append(lowerdivs);
+
+ 
+
+ }
+
+ }
+
+
+//  https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=7&appid=${key}&units=metric
+
+
+// api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=${days}&appid=${key}&units=metric
+//https://www.vhv.rs/dpng/d/467-4678348_stormy-weather-icon-portable-network-graphics-hd-png.png
+
+//https://thumbs.gfycat.com/DizzyWhisperedGuppy-max-1mb.gif
+ </script>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+body{
+    background-color:rgb(96,1,0);   
+}
+h1{
+    color:seashell;
+    text-align:center;
+}
+
+#slideshow {
+      width:100%;
+      height:370px;
+     
+   }
+   #slideshow>img{
+      width:100%;
+      height:100%;
+   }
+  #products{
+    display: flex;
+    width:100%;
+
+  }
+  input{
+      margin-bottom: 20px;
+  }
+  #submit{
+      text-align: center;
+      background-color:rgb(209, 238, 228);
+      padding:10px;
+      display: block;
+      margin:auto;
+      
+  }
+  #option-cont{
+      width:20%;
+      /* height:300px; */
+      background-color:steelblue;
+      color: white;
+      font-size: larger;
+    margin-left: 1%;
+    border-radius: 20px;
+    margin-right: 1%;
+
+  }
+  #food-cont{
+      width:80%;
+      display: grid;
+      grid-template-columns: repeat(4,250px );
+     /* grid-gap:2px; */
+   
+
+
+  }
+img{
+      width:230px;
+      height:100%;
+      margin-left: 5px; 
+}
+     
+    </style>
+</head>
+<body>
+    <div id="container">
+  
+    <h1>Welcome to McDonald's!</h1>
+   <div id="slideshow">
+     <img id="show" src="https://images.unsplash.com/photo-1619881589670-43629f0e90f1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bWNkb25hbGRzfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="">
+
+   </div>
+    <div id="products">
+        <div id="option-cont">
+        <h2>Select Order</h2>
+    <form>   
+  <input type="checkbox" class="messageCheckbox" value="pizza"></input> Pizza<br>
+  <input type="checkbox" class="messageCheckbox" value="burger"></input> Burger<br>
+  <input type="checkbox"  class="messageCheckbox" value="cola"></input>Coca-Cola<br>
+  <input type="checkbox"  class="messageCheckbox" value="french_fries" ></input>French-Fries<br>
+  <input id="submit" type="submit" value="Place Order"/>   
+</form> 
+  </div>
+  <div id="food-cont"></div>
+
+</div>
+
+</div>
+  
+</body>
+</html>
+<script>
+
+
+var imgArr=[{
+    image:"https://media.istockphoto.com/photos/close-up-detail-of-cheeseburger-and-french-fries-food-junk-food-and-picture-id1205590097?b=1&k=20&m=1205590097&s=170667a&w=0&h=FZQSFphX210FURUJ1VGyoN5P92VcN6IaFUAbubYIX5s=",
+
+},
+ {
+     image:"https://c4.wallpaperflare.com/wallpaper/1019/417/97/mcdonalds-burger-and-fries-hd-wallpaper-wallpaper-thumb.jpg",
+
+},
+{
+   image:"https://media.istockphoto.com/photos/burger-with-fire-flames-on-a-black-background-picture-id652335246?k=20&m=652335246&s=170667a&w=0&h=JKazTWSc3Dj05xA1Brk-A461ir4QXgSItCZiXZi0rj4=", 
+},
+
+{
+  image: "https://media.istockphoto.com/photos/cheeseburgers-homemade-hamburgers-on-the-hot-flaming-bbq-grill-picture-id514509056?k=20&m=514509056&s=170667a&w=0&h=KqWMEXcc5Ru7E9aX-Ob81aj-ULkMc_XtAi_ql04s3H0=",
+} 
+]
+
+
+var foodObj=
+    {
+        pizza:"https://c4.wallpaperflare.com/wallpaper/234/543/684/food-pizza-wallpaper-preview.jpg",
+        burger:"https://c4.wallpaperflare.com/wallpaper/197/854/431/fire-burger-5k-steak-wallpaper-preview.jpg",
+        cola:"https://www.pngfind.com/pngs/m/289-2890362_mcdonalds-drink-png-coca-cola-de-mcdonalds-transparent.png",
+        french_fries:"https://www.kindpng.com/picc/m/119-1196691_transparent-french-fry-png-mcdonalds-french-fries-png.png",
+
+    }
+  
+
+
+    let slideshow_img =document.getElementById("show")
+  
+  let i=0;
+  let x = setInterval(function(){
+    if(i == imgArr.length){
+
+       i=0;
+    }
+  
+    slideshow_img.src=imgArr[i].image;
+    i=i+1;
+}, 2000);
+
+
+var Arr = [];
+var checkedValue = document.querySelectorAll('.messageCheckbox');
+for(var checkbox of checkedValue){
+    checkbox.addEventListener("click",function cBox(){
+        if(this.checked==true){
+            Arr.push(this.value);
+            
+        }
+        else{
+            Arr.pop();
+            
+        }
+    console.log(Arr);
+    })
+
+}
+
+
+ document.querySelector("form").addEventListener("submit",Order);
+
+ 
+async function Order(event){
+
+
+event.preventDefault();
+alert("order placed");
+try{
+let num= Math.round(Math.random()*50);
+
+let time= Math.round(Math.random()*7);
+
+    setTimeout(function(){
+     console.log(Arr);
+        alert(`order no${num} is   ready`);
+        document.getElementById("food-cont").innerHTML="";
+        Arr.map(function(elem){
+    
+        var imgdiv= document.createElement("div");
+        var img = document.createElement("img");
+        img.src=foodObj[elem];
+        imgdiv.append(img);
+        document.querySelector("#food-cont").append(imgdiv);
+    
+        })
+        
+    },time*1000 );
+    
+    }   
+    catch(err){
+        console.log(`oops! Sorry The dish is not available today`);
+    }
+
+    }
+//function displayFood(Arr){
+    
+  
+
+//}
+ 
+
+
+</script>

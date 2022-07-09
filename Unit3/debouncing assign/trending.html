@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+   
+  
+ body{
+     background-color:black;
+ }
+ #nav{
+     border:2px solid grey;
+     border-radius: 50%;
+     width:500px;
+     margin:auto;
+     background-color: aliceblue;
+ }
+ h1{
+     text-align: center;
+     color: black;
+     line-height: 5px;
+     padding:20px;
+    
+     
+ }
+
+ #container{
+     display:grid;
+     grid-template-columns: repeat(4,1fr);
+     grid-gap:40px;
+   margin-top: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+   
+ }
+ #container>div{
+    box-shadow:rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+ }
+
+ #imgDiv{
+     width:100%;
+     height:350px;
+  
+
+ }
+ img{
+     width:100%;
+     height:100%;
+  
+ }
+ p{
+     color:white;
+ }
+    </style>
+</head>
+<body>
+    <div id="nav">
+        <h1>✭Trending Movies✭</h1>
+    </div>
+   
+    <div id="container"></div>
+</body>
+</html>
+<script>
+
+
+    let key="8100750827dd1170a9f898d2deb6150e";
+
+     async function getData(){
+         try{
+            let res = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`);
+            let data = await res.json();
+            appendData(data.results);
+            console.log(data);
+         }
+         catch(err){
+             console.log(err);
+         }
+     }
+      getData();
+
+
+
+      function  appendData(data){
+
+      document.getElementById("container").innerHTML="";
+
+       data.map(function(elem){
+       
+       var div = document.createElement("div");
+
+      var imgdiv= document.createElement("div");
+      imgdiv.setAttribute("id","imgDiv");
+
+       var img = document.createElement("img");
+       img.src=`https://image.tmdb.org/t/p/w500${elem.poster_path}`;
+
+      imgdiv.append(img);
+      var title= document.createElement("p");
+          title.innerText= `Title: ${elem.title}`;
+
+          var release= document.createElement("p");
+          release.innerText=`Release Date: ${elem.release_date}`;
+
+          var rating = document.createElement("p");
+          rating.innerText=`Rating: ${elem.vote_average}✭`;
+      
+        div.append(imgdiv,title,release,rating);
+        document.getElementById("container").append(div);
+       })    
+  
+
+      }
+</script>

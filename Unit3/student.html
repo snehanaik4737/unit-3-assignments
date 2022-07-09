@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #main{
+            display:flex;
+            justify-content: space-around;
+        }
+         #box{
+         margin:10% 0 0 5%;
+         border:1px solid grey;
+         width:30%;
+         }
+       form>input{
+         padding:10px;
+         display: block;
+         margin:auto;
+         margin-top: 2%;
+         margin-bottom: 2%;
+         background-color:aliceblue;
+        }
+       #submit{
+        background-color: teal;
+        width:50%;
+        color:white;
+       }
+        table,
+        td,
+        th{
+         border:1px solid #ddd;
+         text-align:left;
+         background-color:rgb(82, 21, 66);
+         color:white;
+         font-size: 20px;
+        }
+        table{
+         border-collapse:collapse;
+         width:100%;
+        }
+        th,td{
+         padding:15px;
+        }
+        #display{
+         margin-top: 10%; 
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+    <div id="box">
+    <form>
+        <input id="name" type="text" placeholder="enter name">
+        <br/>
+        <input id="number" type="number" placeholder="enter roll no">
+        <br/>
+        <input id="city" type="text" placeholder=" enter city">
+        <br/>
+        <input  id="submit" type="submit" placeholder="submit">
+    </form>
+</div>
+<div id="display">
+    <table>
+        <thead>
+            <tr>
+                <th>Student's name</th>
+                <th>Roll no</th>
+                <th>city</th> 
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>
+<script>
+ document.querySelector("form").addEventListener("submit",student);
+
+ var studentarr= JSON.parse(localStorage.getItem("studentdetails") )|| [];
+displayTable(studentarr);
+
+
+ function student(event){
+    event.preventDefault();
+       var name =document.querySelector("#name").value;
+       var number=document.querySelector("#number").value;
+       var city=document.querySelector("#city").value;
+
+       function studentinfo(N,M,S){
+        this.name=N;
+        this.number=M;
+        this.city=S;
+    }
+
+    let student= new studentinfo(name,number,city);
+
+    studentarr.push(student);
+    localStorage.setItem("studentdetails",JSON.stringify(studentarr));
+    displayTable(studentarr);
+ }
+
+
+ function displayTable(studentarr){
+ 
+
+document.querySelector("tbody").innerHTML="";
+studentarr.map(function(elem){
+    var tr=document.createElement("tr");
+
+    var td1=document.createElement("td");
+    td1.textContent=elem.name;
+
+    var td2=document.createElement("td");
+    td2.textContent=elem.number;
+    
+    var td3=document.createElement("td");
+    td3.textContent=elem.city;
+
+    tr.append(td1,td2,td3);
+    document.querySelector("tbody").append(tr);
+})
+
+
+ }
+
+</script>

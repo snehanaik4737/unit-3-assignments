@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #searchResults{
+          display:grid;
+          grid-template-columns: repeat(4,1fr);
+          gap:20px;  
+        }
+        #searchResults>div{
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border:1px solid #cecece;
+            padding: 10px;
+
+        }
+    </style>
+</head>
+<body>
+     <input type="text" id="searchTerm" placeholder="Search Video">
+     <button onclick="searchVideo()">SEARCH BUTTON</button>
+
+     <!-- to display data -->
+     <div id="searchResults"></div>
+
+
+    
+</body>
+</html>
+<script>
+    //  AIzaSyB7AKnwgBPnk3SipQ30HtjwlEZUd8768yA
+  
+    //
+  
+  
+    let API_KEY="AIzaSyB7AKnwgBPnk3SipQ30HtjwlEZUd8768yA";
+  
+  
+    let searchResultsDiv= document.getElementById("searchResults");
+  
+    const  searchVideo = async()  => {
+      
+  try{
+          let userInput=document.getElementById("searchTerm").value;
+  
+          console.log(userInput);
+  
+          let res= await fetch( `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&q=${userInput}&type=video&maxResults=25`);
+  
+          let data = await res.json();
+          let  videoList =data.items;
+  
+          console.log(videoList);
+          displayData(videoList);
+  }
+  catch(err){
+      console.log(err);
+  }
+        
+  };
+  
+  const displayData =(videosArray) =>{
+      searchResultsDiv.innerHTML="";
+  
+      videosArray.map((video) =>{
+  
+         const{id:{videoId},} = video;
+         
+         
+         let videoCard= document.createElement("div");
+  
+         let Iframe= document.createElement("iframe");
+         Iframe.src=`https://www.youtube.com/embed/${videoId}`;
+         Iframe.setAttribute("allowfullscreen",true);
+  
+         Iframe.width="100%";
+  
+         videoCard.append(Iframe);
+         searchResultsDiv.append(videoCard);
+  
+      })
+    }
+  
+  
+  </script>
